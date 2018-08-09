@@ -1,0 +1,10 @@
+---
+- name: Install gunicorn
+  pip:
+    name: 'gunicorn'
+    version: '{{gunicorn_version|default(omit,true)}}'
+    virtualenv: '{{gunicorn_virtualenv|default(omit,true)}}'
+
+- name: Install gunicorn config
+  template: src=gunicorn.py.j2 dest={{ gunicorn_config }}
+  notify: restart gunicorn

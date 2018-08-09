@@ -1,0 +1,45 @@
+---
+
+- name: Ensure that run directories are exists
+  file: state=directory path={{item.run_dir|default(celery_run_dir)}}
+  with_items: celery_run
+
+- name: Configure celery upstart
+  template: >
+    src=upstart.conf.j2
+    dest=/etc/init/{{celery_app_name}}-{{item.action|default('worker')}}{{item.queue|default('') and ('-' + item.queue) or ''}}.conf
+    owner=root group=root mode=0644
+  with_items: "{{celery_run}}"
+  when: celery_service == 'upstart'
+  become: yes
+  notify: celery reload
+
+- name: Configure celery systemd
+  template: >
+    src=systemd.j2
+    dest=/etc/systemd/system/{{celery_app_name}}-{{item.action|default('worker')}}{{item.queue|default('') and ('-' + item.queue) or ''}}.service
+    owner=root group=root mode=0644
+  with_items: "{{celery_run}}"
+  when: celery_service == 'systemd'
+  become: yes
+  notify: celery reload
+
+- name: Prepare log directories
+  file: state=directory dest={{item.log_dir|default(celery_log_dir)}} owner={{item.user|default(celery_user)}}
+  with_items: celery_run
+
+- name: Ensure celery services is started
+  service: >
+      name="{{celery_app_name}}-{{item.action|default('worker')}}{{item.queue|default('') and ('-' + item.queue) or ''}}"
+      state=started
+      enabled=yes
+  with_items: "{{celery_run}}"
+  become: yes
+  changed_when: False
+
+- name: Setup logrotate
+  template: src=logrotate.conf.j2 dest=/etc/logrotate.d/{{celery_app_name}}-celery.conf
+  become: yes
+
+# vim:sw=2:ft=ansible
+

@@ -1,0 +1,18 @@
+# file: hostname/meta/main.yml
+
+galaxy_info:
+  author: pjan vandaele
+  company: ANXS
+  description: sets the hostname and FQDN
+  min_ansible_version: 2.4.2.0
+  license: MIT
+  platforms:
+  - name: Ubuntu
+    versions:
+    - all
+  categories:
+  - system
+
+dependencies: 
+  - role: ANXS.apt
+    when: hostname_avahi|lower == "true"

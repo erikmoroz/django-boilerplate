@@ -1,0 +1,8 @@
+; {{ ansible_managed }}
+
+[program:{{ item.value.name }}]
+{% for option, value in item.value.items() %}
+{% if option != 'name' %}
+{{ option }} = {{ value }}
+{% endif %}
+{% endfor %}

@@ -1,0 +1,30 @@
+---
+### Vault ###
+vaulted_database_name: 'django_app'
+vaulted_database_user: 'django_app'
+vaulted_database_password: 'qwe123'
+
+### Deploy ###
+deploy_env: development
+force_upgrade: yes
+
+### Project ###
+skip_checkout: yes
+run_backend: yes
+run_frontend: no
+
+firewall_allowed_tcp_ports:
+  - "22"
+  - "80"
+  - "443"
+  - "8000"
+  - "8080"
+
+### Domains ###
+site_domain: 'webapp.local'
+
+### Local settings ###
+debug: True
+secret_key: 'super-secure-hash'
+django_fixtures:
+ - '{{ django_dir }}/fixtures/initial.json'

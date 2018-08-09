@@ -1,0 +1,8 @@
+---
+- include: backend.yml
+  when: run_backend
+  tags: [backend]
+
+- include: frontend.yml
+  when: run_frontend
+  tags: [frontend]

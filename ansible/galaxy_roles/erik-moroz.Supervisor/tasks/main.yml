@@ -1,0 +1,5 @@
+---
+- include: supervisor.yml
+  when: supervisor_enabled and (ansible_distribution == 'Ubuntu' and ansible_distribution_version | version_compare('16.04', '>='))
+  tags: [supervisor]
+

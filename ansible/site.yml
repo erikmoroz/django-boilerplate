@@ -1,0 +1,72 @@
+---
+- name: Configure application server
+  hosts: all
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  roles:
+    - role: oefenweb.swapfile
+      become: true
+      tags: [common]
+
+    - role: Stouts.deploy
+      become: true
+      tags: [common]
+
+    - role: geerlingguy.firewall
+      become: true
+      tags: [common]
+
+    - role: Stouts.apt
+      become: true
+      tags: [apt, common]
+
+    - role: ANXS.hostname
+      become: true
+      tags: [common]
+
+    - role: ANXS.ntp
+      become: yes
+      tags: [common]
+
+    - role: ANXS.git
+      become: true
+      tags: [common]
+
+    - role: Stouts.python
+      become: true
+      tags: [python]
+
+    - role: erik-moroz.Supervisor
+      become: true
+      tags: [supervisor]
+
+    - role: ANXS.postgresql
+      become: true
+      tags: [db]
+
+    - role: DavidWittman.redis
+      become: true
+      tags: [cache]
+
+    - role: jdauphant.nginx
+      become: true
+      tags: [server]
+
+    - role: gunicorn
+      become: true
+      tags: [gunicorn]
+
+    - role: geerlingguy.nodejs
+      become: true
+      tags: [nodejs]
+
+    - role: ocha.yarn
+      become: true
+      tags: [yarn]
+
+    - role: Stouts.celery
+      become: true
+      tags: [celery]
+
+    - role: webtier
+      tags: [webtier]

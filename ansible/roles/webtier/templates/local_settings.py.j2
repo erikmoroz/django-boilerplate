@@ -1,0 +1,78 @@
+DEBUG = {{ debug }}
+
+SECRET_KEY = '{{ secret_key }}'
+
+# -----------------
+# STATIC & MEDIA
+# -----------------
+
+MEDIA_URL = '{{ django_media_url }}/'
+MEDIA_ROOT = '{{ django_media_root }}'
+STATIC_URL = '{{ django_static_url }}/'
+STATIC_ROOT = '{{ django_static_root }}'
+
+
+# -----------------
+# Database
+# -----------------
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': '{{ database_name }}',
+        'USER': '{{ database_user }}',
+        'PASSWORD': '{{ database_password }}',
+        'HOST': '{{ database_host }}',
+        'PORT': {{ database_port }},
+        'TEST': {
+            'NAME': '{{ database_name }}_test_db',
+        }
+    }
+}
+
+
+# -----------------
+# Cache
+# -----------------
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': '{{ cache_default_location }}',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            'PARSER_CLASS': 'redis.connection.HiredisParser',
+        }
+    }
+}
+
+
+# -----------------
+# CHANNELS
+# -----------------
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("{{ redis_service_name }}", {{ redis_port }})],
+        },
+    },
+}
+
+
+# -----------------
+# Celery
+# -----------------
+
+BROKER_URL = '{{ cache_celery_location }}'
+CELERY_RESULT_BACKEND = '{{ cache_celery_result_location }}'
+
+
+# -----------------
+# Project
+# -----------------
+
+SITE_URL = '{{ site_protocol }}://{{ site_domain }}'
+API_URL = '{{ site_protocol }}://{{ api_domain }}'
+

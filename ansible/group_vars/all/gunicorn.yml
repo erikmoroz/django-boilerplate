@@ -1,0 +1,17 @@
+---
+### Gunicorn ###
+# Installation
+gunicorn_version: "19.7"
+gunicorn_app_name: "{{ deploy_project_name }}"
+gunicorn_config: "{{ deploy_etc_dir }}/{{ gunicorn_app_name }}_gunicorn.py"
+gunicorn_virtualenv: "{{ virtualenv_dir }}"
+# Running
+gunicorn_bind: "unix:{{ deploy_run_dir }}/{{ deploy_project_name }}.sock"
+gunicorn_workers: 2
+gunicorn_wsgi: "{{ django_wsgi_file }}"
+gunicorn_reload: false  # reload after each request
+
+# Logging
+gunicorn_loglevel: "debug"
+gunicorn_accesslog: "{{ deploy_log_dir }}/gunicorn-access.log"
+gunicorn_errorlog: "{{ deploy_log_dir }}/gunicorn-error.log"

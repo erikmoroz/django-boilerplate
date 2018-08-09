@@ -1,0 +1,37 @@
+---
+- name: Git | Pull sources from the repository
+  git:
+   dest: '{{ frontend_src_dir }}'
+   repo: '{{ frontend_repo }}'
+   version: '{{ frontend_repo_branch }}'
+   force: yes
+   update: yes
+   accept_hostkey: yes
+  register: site_git_clone
+
+- name: Yarn | Install dependencies
+  command: yarn install
+  args:
+    chdir: '{{ frontend_src_dir }}'
+  when: force_upgrade
+  tags: [provision, frontend]
+
+- name: Yarn | build
+  command: yarn build --release
+  args:
+    chdir: '{{ frontend_src_dir }}'
+  when: force_upgrade
+  tags: [provision, frontend]
+
+- name: Yarn | Install dependencies
+  command: yarn install
+  args:
+    chdir: '{{ frontend_src_dir }}/build'
+  when: force_upgrade
+  tags: [provision, frontend]
+
+- name: Restart services
+  become: true
+  command: 'true'
+  notify:
+    - restart webapp

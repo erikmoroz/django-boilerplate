@@ -1,0 +1,46 @@
+---
+- src: Stouts.deploy
+  version: 1.2.0
+
+- src: oefenweb.swapfile
+  version: v2.0.7
+
+- src: Stouts.apt
+  version: 1.4.0
+
+- src: ANXS.hostname
+  version: v2.0.0
+
+- src: ANXS.ntp
+  version: v1.1.0
+
+- src: ANXS.git
+  version: v1.0.1
+
+- src: ANXS.postgresql
+  version: v1.10.1
+
+- src: DavidWittman.redis
+  version: 1.2.5
+
+- src: jdauphant.nginx
+  version: v2.18.1
+
+- src: geerlingguy.nodejs
+  version: 4.2.0
+
+- src: ocha.yarn
+  version: v1.2.0
+
+- src: geerlingguy.firewall
+  version: 2.4.0
+
+- src: Stouts.python
+  version: 2.2.0
+
+- src: git+https://github.com/m-kalyna/Stouts.celery.git
+  version: c50857937042b729d8ac86f8ae210ef2e0081225
+  name: Stouts.celery
+
+- src: erik-moroz.Supervisor
+  version: v1.0.0

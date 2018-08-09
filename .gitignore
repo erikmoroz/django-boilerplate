@@ -1,0 +1,58 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+src/local_settings.py
+src/django_app/local_settings.py
+src/django_app/testing_settings.py
+src/collected_static
+src/media/*
+
+# celery beat schedule file
+celerybeat-schedule
+
+# dotenv
+.env
+
+# virtualenv
+venv/
+ENV/
+
+# IDE
+.idea
+
+# Vagrant
+.vagrant/
+
+# Ansible
+ansible/*.pem
+ansible/vault_pass.txt
+ansible/*.retry
+ansible/roles/external/*

@@ -1,0 +1,36 @@
+---
+- name: restart celery
+  become: true
+  service: state=restarted name={{celery_app_name}}-{{item.action|default('worker')}}{{item.queue|default('') and ('-' + item.queue) or ''}}
+  with_items: '{{ celery_run }}'
+
+- name: reload celery
+  become: true
+  service: state=reloaded name={{celery_app_name}}-{{item.action|default('worker')}}{{item.queue|default('') and ('-' + item.queue) or ''}}
+  with_items: '{{ celery_run }}'
+
+- name: restart redis
+  become: true
+  service: name=redis_{{ redis_port }} state=restarted
+
+- name: restart nginx
+  service: name=nginx state=restarted
+
+- name: reload nginx
+  service: name=nginx state=reloaded
+
+- name: restart gunicorn
+  become: true
+  command: supervisorctl restart {{ deploy_project_name }}-gunicorn
+
+- name: restart channels
+  become: true
+  command: supervisorctl restart {{ deploy_project_name }}-channels
+
+- name: restart flower
+  become: true
+  command: supervisorctl restart {{ deploy_project_name }}-flower
+
+- name: restart webapp
+  become: true
+  command: supervisorctl restart {{ deploy_project_name }}-webapp

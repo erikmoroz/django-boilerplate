@@ -1,0 +1,4 @@
+---
+- name: restart gunicorn
+  become: true
+  command: supervisorctl restart {{ gunicorn_app_name }}-gunicorn

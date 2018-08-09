@@ -1,0 +1,36 @@
+[
+
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$100000$Ji1l0AlhoRLc$tVe2jW8Nx/CrxmUfysPt+p+VQF/Kh9w+IS6sO9SLM0Y=",
+      "last_login": "2000-01-24T10:59:14.492Z",
+      "first_name": "John",
+      "last_name": "Doe",
+      "email": "admin@webapp.local",
+      "username": "admin",
+      "is_staff": true,
+      "is_superuser": true,
+      "is_active": true,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "oauth2_provider.application",
+    "pk": 1,
+    "fields": {
+      "client_id": "8DnsRQTxcBn1TO3WCn33ll1THzLN7kcfqU5Keh5C",
+      "user": 1,
+      "redirect_uris": "",
+      "client_type": "public",
+      "authorization_grant_type": "password",
+      "client_secret": "TH6ViM0R29NiKdi7089IlPI126gFy9okHau7ZtfRt89yuQ9c8uWIzXExhoMetIIpV1YAS9szAsjs6KmCM4IIl8Y5zFhmUDBfj071ttUCQp2MmM66GBvn3lvSCY3z2WfPn",
+      "name": "web_auth",
+      "skip_authorization": false,
+      "created": "2000-01-24T10:59:12.492Z",
+      "updated": "2000-01-24T10:59:13.492Z"
+    }
+  }
+]

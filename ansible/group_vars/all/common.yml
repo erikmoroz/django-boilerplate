@@ -1,0 +1,39 @@
+---
+### SWAP ###
+swapfile_size: 4096MB
+
+### Apt ###
+apt_default_packages: # List of packages which will be installed
+  - command-not-found
+  - curl
+  - htop
+  - iftop
+  - iotop
+  - mercurial
+  - nmap
+  - pciutils
+  - screen
+  - sysstat
+  - vim
+  - wget
+  - ack-grep
+  - dstat
+  - mosh
+  - pciutils
+  - unzip
+  - p7zip-full
+  - python-pip
+  - build-essential
+  - python-dev
+  - python-setuptools
+  - libcurl4-openssl-dev
+  - libffi-dev
+  - libssl-dev
+  - libpq-dev
+
+### Git ###
+git_version: 2.18.0
+
+
+### NTP ###
+ntp_timezone: UTC

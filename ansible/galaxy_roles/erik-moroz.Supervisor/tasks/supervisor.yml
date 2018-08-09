@@ -1,0 +1,79 @@
+---
+- name: Install supervisor (specific version)
+  pip:
+    name: supervisor
+    version: '{{ supervisor_version }}'
+    executable: pip2
+  when: 'supervisor_version != "latest"'
+
+- name: Install supervisor (latest version)
+  pip:
+    name: supervisor
+    state: '{{ supervisor_version }}'
+    executable: pip2
+  when: 'supervisor_version == "latest"'
+
+- name: Prepare directories
+  file:
+    state: directory
+    path: '{{ item }}'
+    owner: '{{ supervisor_system_user }}'
+    group: '{{ supervisor_system_group }}'
+  with_items:
+    - '{{supervisor_cfgdir}}'
+    - '{{supervisor_logdir}}'
+    - '{{supervisor_incdir}}'
+
+- name: Configure supervisor
+  template:
+    src: supervisord.conf.j2
+    dest: '{{supervisor_conf_file}}'
+    owner: '{{ supervisor_system_user }}'
+    group: '{{ supervisor_system_group }}'
+    mode: 0644
+  notify:
+    - supervisor restart
+
+- name: Configure supervisor programs | update program configuration files
+  template:
+    src: program.conf.j2
+    dest: '/etc/supervisor/conf.d/{{ item.key }}.conf'
+    owner: '{{ supervisor_system_user }}'
+    group: '{{ supervisor_system_group }}'
+    mode: 0644
+  with_dict: '{{ supervisor_programs }}'
+  notify:
+    - supervisor restart
+
+- name: Configure supervisor groups | update group configuration files
+  template:
+    src: group.conf.j2
+    dest: '/etc/supervisor/conf.d/{{ item.key }}.conf'
+    owner: '{{ supervisor_system_user }}'
+    group: '{{ supervisor_system_group }}'
+    mode: 0644
+  with_dict: '{{ supervisor_groups }}'
+  notify:
+    - supervisor restart
+
+- name: Configure supervisor systemd service
+  template:
+    src: supervisor-systemd.j2
+    dest: /lib/systemd/system/supervisor.service
+    owner: '{{ supervisor_system_user }}'
+    group: '{{ supervisor_system_group }}'
+    mode: 0644
+  register: update_systemd_script
+  notify:
+    - supervisor restart
+
+- name: Reload supervisor
+  command: systemctl daemon-reload
+  when: update_systemd_script | changed
+
+- name: Start and enable supervisor service
+  service:
+    name: supervisor
+    state: started
+    enabled: true
+

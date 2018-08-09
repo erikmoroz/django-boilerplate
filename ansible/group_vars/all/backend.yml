@@ -1,0 +1,53 @@
+---
+### Backend ###
+backend_src_dir: '{{ deploy_src_dir }}/backend'
+backend_repo: ''
+backend_repo_branch: 'master'
+
+### Django ###
+django_dir: '{{ backend_src_dir }}/src'
+django_app_name: 'django_project'
+django_wsgi_file: '{{ django_dir }}/{{ django_app_name }}/wsgi.py'
+django_settings: '{{ django_app_name }}.settings'
+django_static_url: '/static'
+django_static_root: '{{ django_dir }}/collected_static'
+django_media_url: '/media'
+django_media_root: '{{ django_dir }}/media'
+django_local_settings_file: '{{ django_dir }}/{{ django_app_name }}/local_settings.py'
+django_fixtures: [] # Path to fixture file. Example: {{ django_dir }}/fixtures/initial.json
+django_testing_settings_file: '{{ django_dir }}/{{ django_app_name }}/testing_settings.py'
+
+### Django channels ###
+django_channels_host: 0.0.0.0
+django_channels_port: 8081
+
+### Local settings ###
+debug: False
+django_settings_module: '{{ django_app_name }}.settings'
+secret_key: '{{ vaulted_secret_key }}'
+
+database_host: 'localhost'
+database_port: '{{ postgresql_port }}'
+database_name: '{{ vaulted_database_name }}'
+database_user: '{{ vaulted_database_user }}'
+database_password: '{{ vaulted_database_password }}'
+
+cache_default_location: 'redis://{{ redis_bind }}:{{ redis_port }}/1'
+
+### Python ###
+python_ppa: 'ppa:deadsnakes/ppa'
+python_versions:
+  - 3.6
+python_install: []
+python_virtualenvs:
+  - path: '{{ virtualenv_dir }}'
+    python: python3.6
+
+
+### PIP requirements ###
+pip_requirements:
+  - '{{ django_dir }}/requirements.txt'
+
+
+### Virtualenv ###
+virtualenv_dir: '{{ deploy_dir }}/venv'

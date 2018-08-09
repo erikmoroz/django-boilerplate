@@ -1,0 +1,13 @@
+---
+
+- name: celery restart
+  service: state=restarted name={{celery_app_name}}-{{item.action|default('worker')}}{{item.queue|default('') and ('-' + item.queue) or ''}}
+  with_items: '{{ celery_run }}'
+  become: yes
+
+- name: celery reload
+  service: state=reloaded name={{celery_app_name}}-{{item.action|default('worker')}}{{item.queue|default('') and ('-' + item.queue) or ''}}
+  with_items: '{{ celery_run }}'
+  become: yes
+
+# vim:sw=2:ft=ansible

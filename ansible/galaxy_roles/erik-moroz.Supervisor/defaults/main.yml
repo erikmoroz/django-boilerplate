@@ -1,0 +1,22 @@
+---
+supervisor_enabled: yes                                       # The role is enabled
+supervisor_version: latest                                    # [default: latest]: Supervisor version to install (e.g. latest, 3.3.1)
+supervisor_system_user: root                                  # [default: root]: Name of the user that should own the config file/directory
+supervisor_system_group: root                                 # [default: root]: Name of the group that should own the config file/directory
+supervisor_bindir: '/usr/local/bin'
+supervisor_unix_http_server_file: '/var/run/supervisor.sock'  # [default: /var/run/supervisor.sock]: A path to a UNIX domain socket (e.g. /tmp/supervisord.sock) on which supervisor will listen for HTTP/XML-RPC requests. supervisorctl uses XML-RPC to communicate with supervisord over this port
+supervisor_pid: '/var/run/supervisord.pid'                    # [default: /var/run/supervisord.pid]: The location in which supervisord keeps its pid file
+supervisor_logdir: '/var/log/supervisor'                      # [default: /var/log/supervisor/supervisord.log]: The path to the activity log of the supervisord process
+supervisor_restart_sec: 5
+supervisor_cfgdir: '/etc/supervisor'                          # path to config directory
+supervisor_conf_file: '{{ supervisor_cfgdir }}/supervisord.conf'
+supervisor_incdir: '{{supervisor_cfgdir}}/conf.d'             # path to include directory
+supervisor_programs: {}                                       # List of supervisor programs
+                                                              # Ex. supervisor_tasks:
+                                                              #       - django:
+                                                              #         name: "project-django"
+                                                              #         command: "/usr/bin/python ./manage.py runserver"
+                                                              #         option: value
+                                                              #         option: value
+supervisor_groups: {}                                         # groups of tasks
+

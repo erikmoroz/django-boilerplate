@@ -1,0 +1,28 @@
+---
+### Celery ###
+celery_enabled: yes                                         # The role is enabled
+celery_remove: no                                           # Uninstall the role
+celery_service: systemd                                     # Service manager to use
+celery_user: "{{ deploy_user }}"                            # User to run celery
+celery_group: "{{ deploy_group }}"                          # Group to run celery
+celery_app_name: "{{ deploy_project_name }}"                # Application name
+celery_app_module: '{{ django_app_name }}.celery_app:app'   # Set to application module
+celery_bin: '{{ virtualenv_dir }}/bin/celery'               # Celery executable.
+celery_concurrency: 1                                       # Set default concurence level
+celery_work_dir: "{{ django_dir }}"                         # Set to work directory
+celery_run_dir: "{{ deploy_run_dir }}"                      # Set to run directory
+celery_beat_dbfile: "{{ celery_run_dir }}/beat-schedule"    # Put celery db file here
+celery_log_dir: "{{ deploy_log_dir }}"                      # Set default log directory
+celery_log_level: info                                      # Set default log level
+celery_log_rotate: yes                                      # Enable log rotation
+celery_run:
+  - { action: worker, loglevel: info }
+  - { action: beat, loglevel: info }
+
+
+### Celery Flower ###
+flower_host: localhost
+flower_port: 5555
+
+cache_celery_location: 'redis://{{ redis_bind }}:{{ redis_port }}/2'
+cache_celery_result_location: 'redis://{{ redis_bind }}:{{ redis_port }}/3'

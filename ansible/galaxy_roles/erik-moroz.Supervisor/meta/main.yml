@@ -1,0 +1,17 @@
+---
+galaxy_info:
+  author: Erik Moroz
+  company: Erik Moroz
+  description: Set up the latest or a specific version of supervisor in Ubuntu 16.04 system
+  license: MIT
+  min_ansible_version: 2.0.0.0
+  platforms:
+    - name: Ubuntu
+      versions:
+        - xenial
+  galaxy_tags:
+    - web
+    - system
+    - networking
+    - monitoring
+dependencies: []

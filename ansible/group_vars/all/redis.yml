@@ -1,0 +1,10 @@
+---
+### Redis ###
+redis_user: redis
+redis_bind: 127.0.0.1
+redis_port: 6379
+redis_pidfile: '/var/run/redis/{{ redis_port }}.pid'
+redis_logfile: '""'
+redis_loglevel: notice
+redis_maxmemory: false # Redis memory limit (e.g. 4294967296, 4096mb, 4gb)
+redis_timeout: 0

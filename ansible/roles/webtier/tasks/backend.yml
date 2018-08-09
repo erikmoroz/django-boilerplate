@@ -1,0 +1,89 @@
+---
+- name: Git | Pull sources from the repository
+  git:
+   dest: '{{ backend_src_dir }}'
+   repo: '{{ backend_repo }}'
+   version: '{{ backend_repo_branch }}'
+   force: yes
+   update: yes
+   accept_hostkey: yes
+  when: not skip_checkout
+  register: site_git_clone
+
+- name:  Change owner for logs
+  become: true
+  check_mode: yes
+  file: path={{ deploy_log_dir }}
+        state=directory
+        owner={{ deploy_user }}
+        group={{ deploy_user }}
+        mode=0777
+        recurse=yes
+
+- name:  Change owner for run
+  become: true
+  check_mode: yes
+  file: path={{ deploy_run_dir }}
+        state=directory
+        owner={{ deploy_user }}
+        group={{ deploy_user }}
+        mode=0777
+        recurse=yes
+
+- name: Check nginx syntax of configuration files
+  become: true
+  shell: nginx -t
+  register: result
+  changed_when: "result.rc != 0"
+  always_run: yes
+
+- name: Copy local settings file
+  template:
+    src: local_settings.py.j2
+    dest: '{{ django_local_settings_file }}'
+  when: django_local_settings_file is defined
+
+- name: PIP | Install requirements
+  become: true
+  pip:
+    requirements: '{{ item }}'
+    virtualenv: '{{ virtualenv_dir }}'
+    state: present
+  with_items: '{{ pip_requirements }}'
+
+- name: Django | Migrate database
+  django_manage:
+    command: migrate
+    settings: '{{ django_settings }}'
+    app_path: '{{ django_dir }}'
+    virtualenv: '{{ virtualenv_dir }}'
+
+- name: Django | Load fixtures
+  become: true
+  django_manage:
+    command: loaddata
+    fixtures: '{{ item }}'
+    settings: '{{ django_settings }}'
+    app_path: '{{ django_dir }}'
+    virtualenv: '{{ virtualenv_dir }}'
+  with_items: '{{ django_fixtures }}'
+  when: site_git_clone.changed or force_upgrade
+
+- name: Django | Collect static assets
+  django_manage:
+    command: collectstatic
+    settings: '{{ django_settings }}'
+    app_path: '{{ django_dir }}'
+    virtualenv: '{{ virtualenv_dir }}'
+
+- name: Restart services
+  become: true
+  command: 'true'
+  always_run: yes
+  notify:
+    - restart gunicorn
+    - restart channels
+    - restart nginx
+    - restart celery
+    - restart redis
+    - restart flower
